@@ -5,7 +5,7 @@ public class PathFinder {
     private static final int MOVE_STRAIGHT_COST = 10;
     private static final int MOVE_DIAGONAL_COST = 14;
 
-    private ArrayList<Node> result = new ArrayList<>();
+    private final Stack<Node> result = new Stack<>();
 
     public PathFinder(Node source, Node destination) {
         Queue<Node> openSet = new PriorityQueue<>((node, node1) -> {
@@ -28,10 +28,10 @@ public class PathFinder {
             if (current == destination) {
                 //path has been found
                 Node tmpNode = current;
-                result.add(tmpNode);
+                result.push(tmpNode);
                 while (tmpNode.getParentNode() != null) {
                     tmpNode = tmpNode.getParentNode();
-                    result.add(tmpNode);
+                    result.push(tmpNode);
                 }
                 return;
             }
@@ -81,7 +81,7 @@ public class PathFinder {
         return Math.abs(i.getX() - j.getX()) + Math.abs(i.getY() - j.getY());
     }
 
-    public ArrayList<Node> getResult() {
+    public Stack<Node> getResult() {
         return result;
     }
 }

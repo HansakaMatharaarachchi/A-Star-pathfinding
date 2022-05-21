@@ -1,8 +1,7 @@
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Stack;
 
 public class Main {
     public static void main(String[] args) {
@@ -33,18 +32,19 @@ public class Main {
 
         source = parser.getSourceNode();
         destination = parser.getDestinationNode();
-        System.out.println(source + " >> TO >> " + destination);
+        System.out.println(source + " >> TO >> " + destination + "\n");
 
         PathFinder pathFinder = new PathFinder(source, destination);
-        ArrayList<Node> result = pathFinder.getResult();
+        Stack<Node> result = pathFinder.getResult();
 
-        if (result != null && !result.isEmpty()) {
-            Collections.reverse(result);
-            System.out.println("Time Took : " + stopwatch.elapsedTime() + "\n");
-            for (Node node : result) {
-                System.out.println(node.printConnection() + " " + node);
-            }
-            System.out.println("\nStep Count: " + (result.size() - 1));
+        double elapsedTime = stopwatch.elapsedTime();
+        int stepCount = result.size() - 1;
+        while (!result.isEmpty()) {
+            Node node = result.pop();
+            System.out.println(node.printConnection() + " " + node);
+            if (destination == node) System.out.println("\n----Destination reached----");
         }
+        System.out.println("\nStep Count: " + stepCount);
+        System.out.println("Time Took : " + elapsedTime);
     }
 }

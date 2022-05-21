@@ -114,6 +114,7 @@ public class Node {
         return "(" + x + "," + y + ")";
     }
 
+    // gets the parent node direction
     public String printConnection() {
         if (this.parentNode == null) {
             return "Starts From";
@@ -123,7 +124,7 @@ public class Node {
         if (this.parentNode.x == this.x && this.parentNode.y == this.y + 1) return " ← ";
         if (this.parentNode.x == this.x && this.parentNode.y == this.y - 1) return " → ";
 
-        //Print Diagonals
+        //Diagonals
 
         if (this.parentNode.x == this.x + 1 && this.parentNode.y + 1 == this.y) return " ↗ ";
         if (this.parentNode.x == this.x + 1 && this.parentNode.y - 1 == this.y) return " ↖ ";
