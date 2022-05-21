@@ -42,9 +42,9 @@ public class Main {
         while (!result.isEmpty()) {
             Node node = result.pop();
             System.out.println(node.printConnection() + " " + node);
-            if (destination == node) System.out.println("\n----Destination reached----");
+            if (destination == node)
+                System.out.println("\n----Destination reached----\nStep Count: " + stepCount);
         }
-        System.out.println("\nStep Count: " + stepCount);
         System.out.println("Time Took : " + elapsedTime);
     }
 }
