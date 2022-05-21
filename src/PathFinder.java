@@ -8,21 +8,25 @@ public class PathFinder {
     private ArrayList<Node> result = new ArrayList<>();
 
     public PathFinder(Node source, Node destination) {
-        ArrayList<Node> openSet = new ArrayList<>();
-        ArrayList<Node> closedSet = new ArrayList<>();
+        Queue<Node> openSet = new PriorityQueue<>((node, node1) -> {
+            if ((node.getFCost() > node1.getFCost()) || ((node.getFCost() == node1.getFCost()) && (node.getHCost() > node1.getFCost()))) {
+                return 1;
+            } else if ((node.getFCost() < node1.getFCost()) || ((node.getFCost() == node1.getFCost()) && (node.getHCost() < node1.getFCost()))) {
+                return -1;
+            } else {
+                return 0;
+            }
+        });
+        Set<Node> closedSet = new HashSet<>();
 
         openSet.add(source);
 
         while (!openSet.isEmpty()) {
-            //get the node which has the best F score (least F score)
-            Node current = openSet.get(0);
-            for (Node node : openSet) {
-                if (node.getFCost() < current.getFCost() || (node.getFCost() == current.getFCost() && node.getHCost() < current.getHCost()))
-                    current = node;
-            }
+            // retrieve and remove the node which has the best F score (least F score)
+            Node current = openSet.poll();
 
-            //path has been found
             if (current == destination) {
+                //path has been found
                 Node tmpNode = current;
                 result.add(tmpNode);
                 while (tmpNode.getParentNode() != null) {
@@ -32,28 +36,31 @@ public class PathFinder {
                 return;
             }
 
-            openSet.remove(current);
             closedSet.add(current);
 
-            // check for all possible neighbours for the next successor
+            // check all neighbours of the current node
             for (Node neighbour : current.getNeighbors()) {
                 if (!closedSet.contains(neighbour) && neighbour.isWalkable()) {
-                    int tentativeGCost = current.getGCost() + getDistanceCost(current,neighbour);
+                    // distance from source node to the neighbor through current node
+                    int tentativeGCost = current.getGCost() + getDistanceCost(current, neighbour);
                     boolean newPath = false;
+
                     if (openSet.contains(neighbour)) {
+                        // update the G cost if new G cost is better
                         if (tentativeGCost < neighbour.getGCost()) {
                             neighbour.setGCost(tentativeGCost);
+                            openSet.remove(neighbour);
                             newPath = true;
                         }
                     } else {
                         neighbour.setGCost(tentativeGCost);
                         newPath = true;
-                        openSet.add(neighbour);
                     }
                     if (newPath) {
                         neighbour.setHCost(getDistanceCost(neighbour, destination));
                         neighbour.setFCost(neighbour.getGCost() + neighbour.getHCost());
                         neighbour.setParentNode(current);
+                        openSet.add(neighbour);
                     }
                 }
             }
@@ -68,11 +75,12 @@ public class PathFinder {
         int remaining = Math.abs(xD - yD);
         return MOVE_DIAGONAL_COST * Math.min(xD, yD) + MOVE_STRAIGHT_COST * remaining;
     }
-    //Calculates Manhattan distance ideal - s for N S E W
-    private static int getManhattanDistance(Node i, Node j)
-    {
+
+    //Calculates Manhattan distance ideal for - N S E W
+    private static int getManhattanDistance(Node i, Node j) {
         return Math.abs(i.getX() - j.getX()) + Math.abs(i.getY() - j.getY());
     }
+
     public ArrayList<Node> getResult() {
         return result;
     }

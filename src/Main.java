@@ -18,12 +18,11 @@ public class Main {
             fileChooser.setFileFilter(filter);
 
             if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                System.out.println("getCurrentDirectory(): " + fileChooser.getCurrentDirectory());
-                System.out.println("getSelectedFile() : " + fileChooser.getSelectedFile());
+                System.out.println("SelectedFile : " + fileChooser.getSelectedFile());
             } else {
                 System.out.println("No Selection ");
+                System.exit(0);
             }
-
             filepath = fileChooser.getSelectedFile().getPath();
         } else {
             filepath = args[0];
@@ -39,7 +38,7 @@ public class Main {
         PathFinder pathFinder = new PathFinder(source, destination);
         ArrayList<Node> result = pathFinder.getResult();
 
-        if (result != null) {
+        if (result != null && !result.isEmpty()) {
             Collections.reverse(result);
             System.out.println("Time Took : " + stopwatch.elapsedTime() + "\n");
             for (Node node : result) {

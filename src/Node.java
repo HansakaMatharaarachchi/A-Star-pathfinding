@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Node implements Comparable<Node> {
+public class Node {
 
     private int x, y;
     private int fCost, gCost, hCost;
@@ -83,38 +83,30 @@ public class Node implements Comparable<Node> {
         int y = this.y;
 
         //North ↑↑
-        if (y > 0)
-            this.neighbors.add(grid.getNode(x, y - 1));
+        if (y > 0) this.neighbors.add(grid.getNode(x, y - 1));
 
         // West ↓↓
-        if (y < grid.getRowCount() - 1)
-            this.neighbors.add(grid.getNode(x, y + 1));
+        if (y < grid.getRowCount() - 1) this.neighbors.add(grid.getNode(x, y + 1));
 
         // East →→
-        if (x < grid.getRowCount() - 1)
-            this.neighbors.add(grid.getNode(x + 1, y));
+        if (x < grid.getRowCount() - 1) this.neighbors.add(grid.getNode(x + 1, y));
 
         // ←← South
-        if (x > 0)
-            this.neighbors.add(grid.getNode(x - 1, y));
+        if (x > 0) this.neighbors.add(grid.getNode(x - 1, y));
 
         //DIAGONALS
 
         //North East ↗
-        if (x > 0 && y != grid.getColumnCount() - 1)
-            this.neighbors.add(grid.getNode(x - 1, y + 1));
+        if (x > 0 && y != grid.getColumnCount() - 1) this.neighbors.add(grid.getNode(x - 1, y + 1));
 
         //North West ↖
-        if (x > 0 && y > 0)
-            this.neighbors.add(grid.getNode(x - 1, y - 1));
+        if (x > 0 && y > 0) this.neighbors.add(grid.getNode(x - 1, y - 1));
 
         //South East ↘
-        if (x < grid.getRowCount() - 1 && y < grid.getColumnCount() - 1)
-            this.neighbors.add(grid.getNode(x + 1, y + 1));
+        if (x < grid.getRowCount() - 1 && y < grid.getColumnCount() - 1) this.neighbors.add(grid.getNode(x + 1, y + 1));
 
         //South West ↙
-        if (x < grid.getRowCount() - 1 && y > 0)
-            this.neighbors.add(grid.getNode(x + 1, y - 1));
+        if (x < grid.getRowCount() - 1 && y > 0) this.neighbors.add(grid.getNode(x + 1, y - 1));
     }
 
     @Override
@@ -126,33 +118,17 @@ public class Node implements Comparable<Node> {
         if (this.parentNode == null) {
             return "Starts From";
         }
-        if (this.parentNode.x == this.x + 1 && this.parentNode.y == this.y)
-            return " ↑ ";
-        if (this.parentNode.x == this.x - 1 && this.parentNode.y == this.y)
-            return " ↓ ";
-        if (this.parentNode.x == this.x && this.parentNode.y == this.y + 1)
-            return " ← ";
-        if (this.parentNode.x == this.x && this.parentNode.y == this.y - 1)
-            return " → ";
+        if (this.parentNode.x == this.x + 1 && this.parentNode.y == this.y) return " ↑ ";
+        if (this.parentNode.x == this.x - 1 && this.parentNode.y == this.y) return " ↓ ";
+        if (this.parentNode.x == this.x && this.parentNode.y == this.y + 1) return " ← ";
+        if (this.parentNode.x == this.x && this.parentNode.y == this.y - 1) return " → ";
 
         //Print Diagonals
 
-        if (this.parentNode.x == this.x + 1 && this.parentNode.y + 1 == this.y)
-            return " ↗ ";
-        if (this.parentNode.x == this.x + 1 && this.parentNode.y - 1 == this.y)
-            return " ↖ ";
-        if (this.parentNode.x == this.x - 1 && this.parentNode.y + 1 == this.y)
-            return " ↘ ";
-        if (this.parentNode.x == this.x - 1 && this.parentNode.y - 1 == this.y)
-            return " ↙ ";
+        if (this.parentNode.x == this.x + 1 && this.parentNode.y + 1 == this.y) return " ↗ ";
+        if (this.parentNode.x == this.x + 1 && this.parentNode.y - 1 == this.y) return " ↖ ";
+        if (this.parentNode.x == this.x - 1 && this.parentNode.y + 1 == this.y) return " ↘ ";
+        if (this.parentNode.x == this.x - 1 && this.parentNode.y - 1 == this.y) return " ↙ ";
         return null;
-    }
-
-    @Override
-    public int compareTo(Node o) {
-        if (this.getFCost() < o.getFCost())
-            return -1;
-        return 1;
-
     }
 }
